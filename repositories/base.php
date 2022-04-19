@@ -19,7 +19,7 @@ if (!function_exists('find')) {
     }
 }
 
-if (!function_exists('insert')) {
+if (!function_exists('insertRepo')) {
     function insertRepo(string $tableName, string $input)
     {
         global $connection;

@@ -1,3 +1,18 @@
+<?php
+session_start();
+if (isset($_GET['page'])) {
+    $p = $_GET['page'];
+} else {
+    $p = '';
+}
+if ($p != "home" and $p != "") {
+    if (isset($_SESSION['is_login'])) {
+        if (!$_SESSION['is_login']) {
+            echo "<script>document.location.href='login.php'</script>";
+        }
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -24,15 +39,32 @@
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=home">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=user">User</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=pelanggan">Pelanggan</a>
-                    </li>
+                    <?php
+                    if (isset($_SESSION['is_login'])) {
+                        if ($_SESSION['is_login']) {
+                    ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.php?page=user">User</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.php?page=pelanggan">Pelanggan</a>
+                            </li>
+                    <?php }
+                    } ?>
 
                 </ul>
-                <a href="login.php" class="btn btn-outline-success" type="submit">Login</a>
+                <?php
+                if (isset($_SESSION['is_login'])) {
+                    if ($_SESSION['is_login']) {
+                ?>
+                        <a href="logout.php" class="btn btn-outline-success" type="submit">Logout</a>
+                    <?php } else { ?>
+                        <a href="login.php" class="btn btn-outline-success" type="submit">Login</a>
+                    <?php } ?>
+                <?php } else { ?>
+                    <a href="login.php" class="btn btn-outline-success" type="submit">Login</a>
+                <?php } ?>
+
             </div>
         </div>
     </nav>
@@ -43,6 +75,10 @@
             echo "<script>document.location.href='index.php?page=home'</script>";
         } else {
             $p = $_GET['page'];
+            if ($p != "home") {
+                if (isset($_SESSION['is_login'])) {
+                }
+            }
             include "pages/$p.php";
         }
         ?>
